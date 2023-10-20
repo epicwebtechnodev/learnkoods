@@ -402,6 +402,10 @@ def signIn(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'Username does not exist')
         
         user = authenticate(request,username=username,password=password)
         try:
@@ -955,10 +959,10 @@ def user_jb_crs(request):
         # print(skk)
 
 
-        matching_job = Job.objects.filter(skills_req__data__in=usr_skl)[:5]
+        matching_job = Job.objects.filter(skills_req__data__in=usr_skl)[:6]
 
         #############################--Courses--###############################
-        filter_crs=Courses.objects.filter(skills_req__data__in=usr_skl)[:5]
+        filter_crs=Courses.objects.filter(skills_req__data__in=usr_skl)[:6]
 
 
         # crs = Courses.objects.all().values("skills")
@@ -987,7 +991,7 @@ def user_jb_crs(request):
         data={
             "dat":no_data,
         }
-    return render(request, "usr_job_course.html", data)
+    return render(request, "user_update.html", data)
 
 
 def user_update(request):
