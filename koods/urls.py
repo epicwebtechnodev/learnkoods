@@ -51,6 +51,7 @@ urlpatterns = [
     path('sal/', views.sal_view),
     path('user-jb-crs/', views.user_jb_crs),
     path('det/', views.filter_crs),
+    path('usr/', views.user_update),
 
     # path('work_p/', views.work_position, name="work_prosition"),
     # path("data/",views.insert_skill),

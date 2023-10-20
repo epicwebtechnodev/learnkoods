@@ -512,6 +512,9 @@ def ProfileUpdateView(request):
     }
     return render(request,"profile.html",data)
 
+
+
+
 # class ProfileUpdateView(LoginRequiredMixin, TemplateView):
 #     user_form = UserForm
 #     profile_form = ProfileForm
@@ -556,6 +559,8 @@ def ProfileUpdateView(request):
 
 #     def get(self, request, *args, **kwargs):
 #         return self.post(request, *args, **kwargs)
+
+
 
 def password_reset_request(request):
     rndm = random.randint(999,9999)
@@ -983,3 +988,8 @@ def user_jb_crs(request):
             "dat":no_data,
         }
     return render(request, "usr_job_course.html", data)
+
+
+def user_update(request):
+    # return render(request,"user_update.html")
+    return HttpResponse("Hello")
