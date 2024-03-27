@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate,login,logout
+from accounts.models import CustomUser
 from course.models import Courses
 from job.models import Category, Job
 from koods.forms import ADDCOURSE_DESC, EDIT_DESC, EDITJOB, CreateUserForm
@@ -25,6 +26,8 @@ from uploads.views import data
 from koods.forms import ADDJOB_DESC
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 def Test(request):
@@ -184,8 +187,6 @@ def editjob(request,id):
         job_title = request.POST.get("job_title")
         company = request.POST.get('company')
         job_type = request.POST.get('job_type')
-        category = request.POST.get('category')
-        cat_id = Category.objects.get(id=category)
         exp_required = request.POST.get('exp_required')
         skills_required = request.POST.getlist('skills_req')
         min_salary = request.POST.get('min_salary')
@@ -203,7 +204,6 @@ def editjob(request,id):
         usr.job_title=job_title
         usr.company=company
         usr.job_type=job_type
-        usr.category=cat_id
         usr.exp_required=exp_required
         usr.job_des=job_desc
         usr.min_salary=min_salary
@@ -377,12 +377,11 @@ def signUp(request):
     form = CreateUserForm()
     if request.method == "POST":
         form = CreateUserForm(request.POST)
-        
         if form.is_valid():  
             username = form.cleaned_data['username']
             
             # Check if the username already exists
-            if User.objects.filter(username=username).exists():
+            if CustomUser.objects.filter(username=username).exists():
                 form.add_error(None, 'Username already exists.')
             else:
                 # Save the user data to the database

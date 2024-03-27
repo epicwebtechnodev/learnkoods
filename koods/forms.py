@@ -5,6 +5,8 @@ from accounts.models import CustomUser
 from uploads.models import Profile
 from job.models import Job
 from course.models import Courses
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from tinymce.widgets import TinyMCE
 
 # class ADDJOB(forms.ModelForm):
@@ -93,8 +95,9 @@ class EDIT_DESC(forms.ModelForm):
 class CreateUserForm(UserCreationForm):
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['first_name','last_name','username','email','password1','password2']
+
     def create(self,validated_data):
         username = validated_data.pop("username",None)
         groups_data = validated_data.pop("groups", [])
