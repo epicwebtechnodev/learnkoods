@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'course',
     'scrape_data',
     'job',
+    'accounts',
+    'companys',
+    'internship'
 ]
 
 MIDDLEWARE = [
@@ -90,7 +93,7 @@ WSGI_APPLICATION = 'koods.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-import dj_database_url
+# import dj_database_url
 
 # DATABASES = {
 #     'default': {
@@ -100,32 +103,32 @@ import dj_database_url
 # }
 
 
+# DATABASES = {
+# 	'default': {
+# 		'ENGINE': 'django.db.backends.mysql',
+# 		'NAME': 'learnkoods',
+# 		'USER': 'admin',
+# 		'PASSWORD': 'epicwebtechno',
+# 		'HOST':'learnkoods.c8nwbcie1gpb.eu-north-1.rds.amazonaws.com',
+# 		'PORT':'3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         }
+# 	}
+# }
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'learnkoods',
-		'USER': 'admin',
-		'PASSWORD': 'epicwebtechno',
-		'HOST':'learnkoods.c8nwbcie1gpb.eu-north-1.rds.amazonaws.com',
+		'NAME': env("DB_NAME"),
+		'USER': env("USR"),
+		'PASSWORD': env("PASS"),
+		'HOST':env("HOST_NAME"),
 		'PORT':'3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
 	}
 }
-# DATABASES = {
-# 	'default': {
-# 		'ENGINE': 'django.db.backends.mysql',
-# 		'NAME': env("DB_NAME"),
-# 		'USER': env("USR"),
-# 		'PASSWORD': env("PASS"),
-# 		'HOST':env("HOST_NAME"),
-# 		'PORT':'3306',
-        # 'OPTIONS': {
-        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        # }
-# 	}
-# }
 
 
 
@@ -206,6 +209,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'PROFILE_FIELDS': []
     }
 }
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

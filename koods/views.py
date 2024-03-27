@@ -955,27 +955,10 @@ def user_jb_crs(request):
         # print(skk)
 
 
-        matching_job = Job.objects.filter(skills_req__data__in=usr_skl)[:5]
+        matching_job = Job.objects.filter(skills_req__data__in=usr_skl)[:3]
 
         #############################--Courses--###############################
-        filter_crs=Courses.objects.filter(skills_req__data__in=usr_skl)[:5]
-
-
-        # crs = Courses.objects.all().values("skills")
-        # pro = Profile.objects.get(user = usr)
-        # skill_lst = list(pro.skills.all())
-        # lstt = []
-        # lst2 = []
-        # for i in crs:
-        #     lstt.append(i["skills"].split(","))
-        # for j in lstt:
-        #     for k in j:
-        #         if k not in lst2:
-        #             lst2.append(k)
-        # q = Q()
-        # for merchant in skill_lst:
-        #     q |= Q(skills__icontains = merchant)
-        # filter_crs=Courses.objects.filter(q)[:5]
+        filter_crs=Courses.objects.filter(skills_req__data__in=usr_skl)[:3]
 
         data = {
             'data':matching_job,
@@ -987,7 +970,7 @@ def user_jb_crs(request):
         data={
             "dat":no_data,
         }
-    return render(request, "usr_job_course.html", data)
+    return render(request, "user_update.html", data)
 
 
 def user_update(request):

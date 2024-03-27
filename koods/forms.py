@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Permission,Group
+from accounts.models import CustomUser
 from uploads.models import Profile
 from job.models import Job
 from course.models import Courses
@@ -57,7 +58,7 @@ class ADDCOURSE_DESC(forms.ModelForm):
 class EDITJOB(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['category','job_title','job_type','exp_required','skills_req','job_des','min_salary','max_salary','location','company','company_desc','url','job_image','is_published','is_closed']
+        fields = ['job_title','job_type','exp_required','skills_req','job_des','min_salary','max_salary','location','company','company_desc','url','job_image','is_published','is_closed']
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(EDITJOB, self).__init__(*args, **kwargs)
@@ -94,7 +95,19 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['first_name','last_name','username','email','password1','password2']
-
+    def create(self,validated_data):
+        username = validated_data.pop("username",None)
+        groups_data = validated_data.pop("groups", [])
+        # perms_data = validated_data.pop("user_permissions", []) 
+        user = CustomUser.objects.create(username=username,**validated_data)
+        user.is_company = True
+        user.is_active = True
+        user.save()
+        user.groups.set(groups_data)
+        permission_data = ['add_job','change_job','create_job','delete_job','view_job','add_courses','change_courses','delete_courses','view_courses','add_internship','change_internship','delete_internship','view_internship','add_customuser',"add_companyemployee","change_companyemployee","delete_companyemployee","view_companyemployee"]
+        permissions = Permission.objects.filter(codename__in=permission_data)
+        user.user_permissions.set(*permissions)
+        return user
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
